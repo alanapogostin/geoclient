@@ -58,13 +58,13 @@ geoclient_api_keys <- function(id, key, overwrite = FALSE, install = FALSE){
 
   if (!install) {
 
-    if (!is_null(id) && !is_null(key)) {
+    if (!is.null(id) && !is.null(key)) {
       message("To install your API keys for use in future sessions, run this function with `install = TRUE`.")
       Sys.setenv(GEOCLIENT_APP_ID = id)
       Sys.setenv(GEOCLIENT_APP_KEY = key)
     }
 
-    if (is_null(id) && is_null(key)) {
+    if (is.null(id) && is.null(key)) {
       message("Your API ID and key have been unset.")
       Sys.unsetenv("GEOCLIENT_APP_ID")
       Sys.unsetenv("GEOCLIENT_APP_KEY")
@@ -95,7 +95,7 @@ geoclient_api_keys <- function(id, key, overwrite = FALSE, install = FALSE){
 
   env_no_keys <- purrr::discard(old_env, ~stringr::str_detect(.x, "GEOCLIENT_APP_ID|GEOCLIENT_APP_KEY"))
 
-  if (is_null(id) && is_null(key)) {
+  if (is.null(id) && is.null(key)) {
     message("Your API ID and key have been removed from your .Renviron")
     writeLines(env_no_keys, ".Renviron", sep = "\n")
     Sys.unsetenv("GEOCLIENT_APP_ID")
@@ -117,7 +117,7 @@ geoclient_api_keys <- function(id, key, overwrite = FALSE, install = FALSE){
 
 get_creds <- function(id = NULL, key = NULL) {
 
-  if (is_null(id) && is_null(key)) {
+  if (is.null(id) && is.null(key)) {
     id <- Sys.getenv("GEOCLIENT_APP_ID")
     key <- Sys.getenv("GEOCLIENT_APP_KEY")
   }
@@ -133,3 +133,4 @@ get_creds <- function(id = NULL, key = NULL) {
 
   list(app_id = id, app_key = key)
 }
+

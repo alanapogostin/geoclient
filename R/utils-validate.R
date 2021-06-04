@@ -3,7 +3,7 @@
 # Clean up borough inputs - both text and DCP boro codes.
 clean_borough <- function(borough) {
 
-  if (is_null(borough)) return(NULL)
+  if (is.null(borough)) return(NULL)
 
   detect <- function(string, pattern) {
     pattern <- paste0("^\\s*", pattern, "\\s*$")
@@ -30,7 +30,7 @@ if_null_fill_na <- function(x, n) {
 # For a given dataframe and "enquo(col)", return null if the quo is null,
 # otherwise return the column pulled as a vector
 pull_or_null <- function(.data, quo_col) {
-  if (quo_is_null(quo_col)) {
+  if (quo_is.null(quo_col)) {
     return(NULL)
   } else {
     return(dplyr::pull(.data, !!quo_col))

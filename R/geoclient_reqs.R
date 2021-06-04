@@ -37,7 +37,7 @@ geoclient_reqs <- function(inputs, operation, creds, rate_limit) {
 
   inputs_dedup %>%
     fix_input_names(operation) %>%
-    dplyr::bind_cols(ret) %>%
+    dplyr::bind_cols(ret) %>% # where the error might be
     dplyr::right_join(
       fix_input_names(inputs, operation),
       by = names(fix_input_names(inputs, operation))
@@ -53,7 +53,7 @@ geoclient_reqs <- function(inputs, operation, creds, rate_limit) {
 # Returns: API response as a dataframe
 geoclient_req <- function(..., operation, creds, pb = NULL) {
 
-  if (!is_null(pb) && !pb$finished) pb$tick()
+  if (!is.null(pb) && !pb$finished) pb$tick()
 
   # Build query param list, removing element if NA (eg. address borough/zip)
   params <- purrr::splice(..., creds) %>% purrr::discard(is_na)
