@@ -94,7 +94,7 @@ validate_place_inputs <- function(place, borough, zip) {
 
   len <- length(place)
 
-  if (is.null(borough) && is.null(zip)) {
+  if (is_null(borough) && is_null(zip)) {
     stop_glue("One of either borough or zip must be provided")
   }
 

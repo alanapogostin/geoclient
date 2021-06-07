@@ -53,7 +53,7 @@ geoclient_reqs <- function(inputs, operation, creds, rate_limit) {
 # Returns: API response as a dataframe
 geoclient_req <- function(..., operation, creds, pb = NULL) {
 
-  if (!is.null(pb) && !pb$finished) pb$tick()
+  if (!is_null(pb) && !pb$finished) pb$tick()
 
   # Build query param list, removing element if NA (eg. address borough/zip)
   params <- purrr::splice(..., creds) %>% purrr::discard(is_na)
