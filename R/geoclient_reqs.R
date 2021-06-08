@@ -15,7 +15,7 @@ geoclient_reqs <- function(inputs, operation, creds, rate_limit) {
     geoclient_req <- ratelimitr::limit_rate(geoclient_req, ratelimitr::rate(n = 2500, period = 60))
   }
 
-  inputs_dedup <- inputs %>% dplyr::distinct() %>% drop_invalid_rows(operation)
+  inputs_dedup <- inputs %>% drop_invalid_rows(operation) %>% dplyr::distinct(.keep_all = TRUE)
 
   if (nrow(inputs_dedup) == 0) {
     all_invalid <- inputs %>%
@@ -33,16 +33,19 @@ geoclient_reqs <- function(inputs, operation, creds, rate_limit) {
     operation = operation,
     creds = creds,
     pb = pb
-  )
+  ) %>% dplyr::distinct(.keep_all = TRUE)
 
   inputs_dedup %>%
+    dplyr::distinct(.keep_all = TRUE) %>%
     fix_input_names(operation) %>%
-    #dplyr::merge(inputs_dedup, ret, by.x = "address", by.y = "address") %>%
-    dplyr::left_join(
+    cbind(ret) %>%
+    #dplyr::bind_cols(ret) %>%
+    dplyr::right_join(
       fix_input_names(inputs, operation),
       by = names(fix_input_names(inputs, operation))
-    ) %>%
-    dplyr::mutate(!!"no_results" := replace_na(!!sym("no_results"), TRUE)) # Rows dropped by drop_invalid_rows()
+    )
+  # %>%
+  #   dplyr::mutate(!!"no_results" := replace_na(!!sym("no_results"), TRUE)) # Rows dropped by drop_invalid_rows()
 }
 
 
